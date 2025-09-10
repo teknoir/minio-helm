@@ -37,7 +37,7 @@ spec:
             - name: MINIO_ENDPOINT
               value: minio
             - name: MINIO_PORT
-              value: {{ .Values.minioAPIPort }}
+              value: {{ .Values.minioAPIPort | quote }}
           volumeMounts:
             - name: etc-path
               mountPath: /etc/minio/mc
