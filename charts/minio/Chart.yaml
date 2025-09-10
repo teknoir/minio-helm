@@ -3,5 +3,5 @@ name: minio
 description: A Helm chart for Teknoir MinIO
 
 type: application
-version: 0.0.1-beta.1
+version: 0.0.1-beta.2
 appVersion: "RELEASE.2025-09-07T16-13-09Z"
