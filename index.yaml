@@ -3,6 +3,16 @@ entries:
   minio:
   - apiVersion: v2
     appVersion: RELEASE.2025-09-07T16-13-09Z
+    created: "2025-09-10T13:17:48.926925983Z"
+    description: A Helm chart for Teknoir MinIO
+    digest: 77a4a1b2d4f6a1ea3ca8e402075fe82f41319261c8a07b263fa4f0aaf7824378
+    name: minio
+    type: application
+    urls:
+    - https://github.com/teknoir/minio-helm/releases/download/minio-0.0.1/minio-0.0.1.tgz
+    version: 0.0.1
+  - apiVersion: v2
+    appVersion: RELEASE.2025-09-07T16-13-09Z
     created: "2025-09-10T12:34:22.008566715Z"
     description: A Helm chart for Teknoir MinIO
     digest: 9b5f00383f68e09708afa43be0ceab398464ca06cc6168aaaf7bf4aef60082c9
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://github.com/teknoir/minio-helm/releases/download/minio-0.0.1-beta.2/minio-0.0.1-beta.2.tgz
     version: 0.0.1-beta.2
-generated: "2025-09-10T12:34:22.008572916Z"
+generated: "2025-09-10T13:17:48.926935381Z"
