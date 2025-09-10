@@ -9,14 +9,21 @@ metadata:
   annotations:
     {{- toYaml $.Values.annotations | nindent 4 }}
 spec:
+  type: {{ if .Values.nodePort.enabled }}NodePort{{ else }}ClusterIP{{ end }}
   ports:
     - name: http-minio-api
       port: {{ .Values.minioAPIPort }}
       targetPort: {{ .Values.minioAPIPort }}
       protocol: TCP
+      {{- if .Values.nodePort.enabled }}
+      nodePort: 31990
+      {{- end }}
     - name: http-minio-console
       port: {{ .Values.minioConsolePort }}
       targetPort: {{ .Values.minioConsolePort }}
       protocol: TCP
+      {{- if .Values.nodePort.enabled }}
+      nodePort: 31991
+      {{- end }}
   selector:
     app: minio

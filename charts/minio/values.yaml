@@ -22,6 +22,9 @@ resources:
 annotations:
   teknoir.org/managed-by: minio
 
+# Service configuration
+nodePort:
+  enabled: false
 
 minioAPIPort: "9000"
 minioConsolePort: "9001"
