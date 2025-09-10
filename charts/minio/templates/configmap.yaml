@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minio
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app: minio
+  annotations:
+    {{- toYaml $.Values.annotations | nindent 4 }}
+data:
+  initialize: |-
+    {{- include (print $.Template.BasePath "/_helper_create_bucket.txt") . | nindent 4 }}

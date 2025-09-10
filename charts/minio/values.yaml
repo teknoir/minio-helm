@@ -1,0 +1,61 @@
+# MinIO container configuration
+image:
+  repository: quay.io/minio/minio
+  tag: RELEASE.2025-09-07T16-13-09Z
+  pullPolicy: Always
+
+# MinIO Client image
+mcImage:
+  repository: quay.io/minio/mc
+  tag: RELEASE.2025-09-07T16-13-09Z
+  pullPolicy: Always
+
+# Resource requests and limits
+resources:
+  requests:
+    memory: 128Mi
+    cpu: 100m
+  limits:
+    memory: 1Gi
+    cpu: 1500m
+
+annotations:
+  teknoir.org/managed-by: minio
+
+
+minioAPIPort: "9000"
+minioConsolePort: "9001"
+
+## Set default rootUser, rootPassword
+## rootUser and rootPassword is generated when not set
+## Distributed MinIO ref: https://docs.min.io/community/minio-object-store/operations/install-deploy-manage/deploy-minio-multi-node-multi-drive.html
+##
+rootUser: "teknoir"
+rootPassword: "teknoir123456!"
+
+## Directory on the MinIO pof
+certsPath: "/opt/teknoir/minio/certs/"
+configPathmc: "/opt/teknoir/minio/mc/"
+
+## Path where PV would be mounted on the MinIO Pod
+mountPath: "/export"
+## Override the root directory which the minio server should serve from.
+## If left empty, it defaults to the value of {{ .Values.mountPath }}
+## If defined, it must be a sub-directory of the path specified in {{ .Values.mountPath }}
+##
+bucketRoot: ""
+
+## List of buckets to be created after minio install
+buckets:
+  - name: teknoir
+    policy: none
+    purge: false
+    versioning: false
+    objectlocking: false
+
+## Use this field to add environment variables relevant to MinIO server. These fields will be passed on to MinIO container(s)
+## when Chart is deployed
+environment:
+## Please refer for comprehensive list https://docs.min.io/community/minio-object-store/reference/minio-server/minio-server.html
+## MINIO_SUBNET_LICENSE: "License key obtained from https://subnet.min.io"
+## MINIO_BROWSER: "off"

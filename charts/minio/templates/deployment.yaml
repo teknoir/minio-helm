@@ -1,0 +1,72 @@
+{{ $scheme := "http" }}
+{{ $bucketRoot := or ($.Values.bucketRoot) ($.Values.mountPath) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: minio
+  annotations:
+    {{- toYaml $.Values.annotations | nindent 4 }}
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 100%
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      name: minio
+      labels:
+        app: minio
+      annotations:
+        {{- toYaml $.Values.annotations | nindent 8 }}
+    spec:
+      containers:
+        - name: minio
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "/bin/sh"
+            - "-ce"
+            - "/usr/bin/docker-entrypoint.sh minio server {{ $bucketRoot }} --address :{{ .Values.minioAPIPort }} --console-address :{{ .Values.minioConsolePort }}"
+          volumeMounts:
+            - name: minio-user
+              mountPath: "/tmp/credentials"
+              readOnly: true
+            - name: export
+              mountPath: {{ .Values.mountPath }}
+          ports:
+            - name: {{ $scheme }}
+              containerPort: {{ .Values.minioAPIPort }}
+            - name: {{ $scheme }}-console
+              containerPort: {{ .Values.minioConsolePort }}
+          env:
+            - name: MINIO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: rootUser
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: rootPassword
+            {{- range $key, $val := .Values.environment }}
+            - name: {{ $key }}
+              value: {{ tpl $val $ | quote }}
+            {{- end }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: export
+          hostPath:
+            path: /opt/teknoir/minio
+            type: DirectoryOrCreate
+        - name: minio-user
+          secret:
+            secretName: minio-secret
