@@ -1,13 +1,13 @@
 # MinIO container configuration
 image:
-  repository: quay.io/minio/minio
+  repository: minio/minio
   tag: RELEASE.2025-09-07T16-13-09Z
   pullPolicy: Always
 
 # MinIO Client image
 mcImage:
-  repository: quay.io/minio/mc
-  tag: RELEASE.2025-09-07T16-13-09Z
+  repository: minio/mc
+  tag: RELEASE.2025-08-13T08-35-41Z
   pullPolicy: Always
 
 # Resource requests and limits
